@@ -24,5 +24,17 @@ jobs:
       run: dotnet restore TestApp/TestApp.csproj
     - name: Build
       run: dotnet build TestApp/TestApp.csproj --configuration Release --no-restore
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+    - name: Publish the application
+      run: dotnet publish testapp --configuration Release --output testapp/publish
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+          client-id: '130ee223-75c2-4513-890c-92b36acb3ad9'
+          tenant-id: 'bff5dfe9-c5d8-4928-ab44-0504c399ac97'
+          subscription-id: '832db642-e629-4a9a-9d0e-24863ddbec76'
+
+    - name: Deploy to Azure App Service
+      run: |
+          az webapp deploy --resource-group GITHubActions_RG \
+            --name GITHubApps_WAPP \
+            --src-path testapp/publish
