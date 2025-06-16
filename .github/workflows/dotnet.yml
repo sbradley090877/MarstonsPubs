@@ -25,7 +25,7 @@ jobs:
     - name: Build
       run: dotnet build TestApp/TestApp.csproj --configuration Release --no-restore
     - name: Publish the application
-      run: dotnet publish testapp --configuration Release --output testapp/publish
+      run: dotnet publish TestApp/TestApp.csproj --configuration Release --output testapp/publish
     - name: Login to Azure
       uses: azure/login@v1
       with:
